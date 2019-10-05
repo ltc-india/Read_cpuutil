@@ -86,8 +86,6 @@ unsigned int actflags = 0;
 
 unsigned int flags = 0;
 
-/* Interval and count parameters */
-long interval = -1, count = 0;
 /* Number of decimal places */
 int dplaces_nr = -1;
 
@@ -113,6 +111,9 @@ int softirqcpu_nr = 0;
 struct sigaction alrm_act, int_act;
 int sigint_caught = 0;
 
+/* Interval and count parameters */
+long interval = -1, count = 0;
+
 /*
  ***************************************************************************
  * Print usage and exit
@@ -135,19 +136,6 @@ void usage(char *progname)
 
 /*
  ***************************************************************************
- * SIGALRM signal handler. No need to reset the handler here.
- *
- * IN:
- * @sig	Signal number.
- ***************************************************************************
- */
-void alarm_handler(int sig)
-{
-	alarm(interval);
-}
-
-/*
- ***************************************************************************
  * SIGINT signal handler.
  *
  * IN:
@@ -157,6 +145,19 @@ void alarm_handler(int sig)
 void int_handler(int sig)
 {
 	sigint_caught = 1;
+}
+
+/*
+ ***************************************************************************
+ * SIGALRM signal handler. No need to reset the handler here.
+ *
+ * IN:
+ * @sig	Signal number.
+ ***************************************************************************
+ */
+void alarm_handler(int sig)
+{
+	alarm(interval);
 }
 
 /*
