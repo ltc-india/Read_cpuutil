@@ -10,15 +10,11 @@ int main(int argc, char *argv[])
 {
 	int result;
 	
-	//
 	// announce that we are here, in the INIT program
-	//
 	result = printf("INIT: performing switch_root\n");
 	if(result <= 0) exit(1);
 
-	//
 	// mount the procfs, sysfs and devtmpfs
-	//
 	result = mount("none", "/proc", "proc", MS_SILENT, NULL);
 	if(result != 0) exit(2);
 
@@ -40,33 +36,28 @@ int main(int argc, char *argv[])
 			printf("INIT: waiting for root device /dev/sda1\n");
 			do {
 				if(errno == ENOENT) {
-					printf("Goal 1\n");
+					printf("Debug bits 1\n");
 					usleep(10000);
 					result = mount("/dev/sda1", "/mnt", "ext3", MS_SILENT, NULL);
 				} else {
-					perror("mount failed");
 					printf("errno = %d\n", errno);
 					exit(5);
 				}
 			} while(result != 0);
 		} else {
-			perror("mount failed");
 			printf("errno = %d\n", errno);
 			exit(6);
 		}
 	}
-	printf("Goal 1\n");
-	//
+	printf("Debug bits 2\n");
+
 	// execute switch_root to our new rootfs and run /sbin/init from it
-	//
 	static char *my_argv[]={"switch_root","/mnt", "/sbin/init", NULL};
 	printf("Goal 2\n");
 	execv("/sbin/switch_root", my_argv);
 	printf("Goal 3\n");
 	
-	//
 	// we only get here if execv() fails
-	//
 	exit(6);
 }
 
