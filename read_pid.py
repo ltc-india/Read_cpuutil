@@ -1,13 +1,15 @@
+selfstat = "/proc/self/stat"
 def get_cpu_id():
-    fd = open("/proc/self/stat")
+    fd = open(selfstat)
     print fd.read()
     fd.close()
 
 
 get_cpu_id()
+
 a = 0
 
-fd = open("/proc/self/stat")
+fd = open(selfstat)
 while True:
     print fd.read().split(" ")[38]
     for i in range(1000000):
